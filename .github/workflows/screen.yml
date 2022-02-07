@@ -1,0 +1,37 @@
+name: Screen
+on: [push, pull_request_target]
+
+defaults:
+  run:
+    working-directory: .github/workflows/screen
+
+jobs:
+  screen:
+    name: Screen
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Use cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.cache
+          key: ${{ runner.os }}-node16-screen-${{ hashFiles('package-lock.json') }}
+
+      - name: Screen dependencies
+        run: node ./index.js
+
+      - name: Log result
+        uses: peter-evans/create-or-update-comment@v1
+        if: github.event_name == 'pull_request'
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: "Hello, World!"
+          reactions: "rocket"
