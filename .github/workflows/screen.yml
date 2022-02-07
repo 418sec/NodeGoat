@@ -24,8 +24,11 @@ jobs:
             ~/.npm
             ~/.cache
           key: ${{ runner.os }}-node16-screen-${{ hashFiles('package-lock.json') }}
+          
+      - name: Install screen dependencies
+        run: npm ci
 
-      - name: Screen dependencies
+      - name: Screen project dependencies
         id: screen_dependencies
         run: node ./index.js
 
