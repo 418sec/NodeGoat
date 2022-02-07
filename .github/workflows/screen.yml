@@ -34,4 +34,3 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: ${{ steps.screen_dependencies.outputs.result}}
-          reactions: "rocket"
