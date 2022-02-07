@@ -1,3 +1,7 @@
-console.log("Hello, World!");
+const core = require("@actions/core");
 
-// TODO: implement depedency screen
+const result = "Hello, World!";
+console.log(result);
+
+core.setOutput("result", result);
+core.notice(result);

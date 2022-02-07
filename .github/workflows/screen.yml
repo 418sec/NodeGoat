@@ -26,11 +26,12 @@ jobs:
           key: ${{ runner.os }}-node16-screen-${{ hashFiles('package-lock.json') }}
 
       - name: Screen dependencies
+        id: screen_dependencies
         run: node ./index.js
 
       - name: Log result
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          body: "Hello, World!"
+          body: ${{ steps.screen_dependencies.outputs.result}}
           reactions: "rocket"
