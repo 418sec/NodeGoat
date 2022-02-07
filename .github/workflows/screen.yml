@@ -1,4 +1,4 @@
-name: Screen
+name: 418sec
 on: [push, pull_request_target]
 
 defaults:
@@ -7,7 +7,7 @@ defaults:
 
 jobs:
   screen:
-    name: Screen
+    name: Dependency screen
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
             ~/.npm
             ~/.cache
           key: ${{ runner.os }}-node16-screen-${{ hashFiles('package-lock.json') }}
-          
+
       - name: Install screen dependencies
         run: npm ci
 
