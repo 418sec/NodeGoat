@@ -33,9 +33,9 @@ jobs:
 
       - name: Screen project dependencies
         id: screen_dependencies
+        run: node ./index.js
         with:
           GITHUB_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: node ./index.js
 
       - name: Log result
         uses: peter-evans/create-or-update-comment@v1
