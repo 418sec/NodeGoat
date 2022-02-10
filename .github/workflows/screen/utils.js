@@ -37,7 +37,7 @@ async function generateOSSFviaGolang(repoURL, showDetails) {
   // this requires having GITHUB_AUTH_TOKEN set in the environment
   // use --show-details to see the full output
   // depends on golang installation on machine
-  const command = `scorecard --repo=${repoURL} --format=json ${
+  const command = `./scorecard --repo=${repoURL} --format=json ${
     showDetails ? "--show-details" : ""
   }`;
   console.log(`executing: ${command}`);
