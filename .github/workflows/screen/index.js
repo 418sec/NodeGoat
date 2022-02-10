@@ -13,31 +13,31 @@ import {
 } from "./utils.js";
 
 (async function () {
-  const url = "https://github.com/bfred-it/filter-altered-clicks";
-  const start = hrtime.bigint();
-  const ossf = await generateOSSFviaGolang(url, true)
-    .then(async (res) => {
-      console.log("generated OSSF");
-      const rateLimitData = await octokit.request("GET /rate_limit");
-      console.log(rateLimitData.data.rate);
-      return res;
-    })
-    .catch((err) => {
-      throw new Error(err);
-    });
+  // const url = "https://github.com/bfred-it/filter-altered-clicks";
+  // const start = hrtime.bigint();
+  // const ossf = await generateOSSFviaGolang(url, true)
+  //   .then(async (res) => {
+  //     console.log("generated OSSF");
+  //     const rateLimitData = await octokit.request("GET /rate_limit");
+  //     console.log(rateLimitData.data.rate);
+  //     return res;
+  //   })
+  //   .catch((err) => {
+  //     throw new Error(err);
+  //   });
 
-  console.log(ossf);
-  const end = hrtime.bigint();
+  // console.log(ossf);
+  // const end = hrtime.bigint();
 
-  const time = Number(end - start) / 1000000000;
-  console.log(time);
+  // const time = Number(end - start) / 1000000000;
+  // console.log(time);
 
-  core.setOutput("result", ossf);
-  return;
-  const test = "https://github.com/ossf/scorecard";
-  const result = generateOSSFviaDocker(test, true);
-  console.log(result);
-  return;
+  // core.setOutput("result", ossf);
+  // return;
+  // const test = "https://github.com/ossf/scorecard";
+  // const result = generateOSSFviaDocker(test, true);
+  // console.log(result);
+  // return;
   const pkg = JSON.parse(readFileSync("../../../package.json", "utf8"));
   const deps = getDependencyEntries(pkg, true, 0);
   // console.log(deps[10]);
@@ -99,4 +99,6 @@ import {
     JSON.stringify(ossfScorecards, null, 2)
   );
   console.log("DONE");
+
+  core.setOutput("result", ossf);
 })();
