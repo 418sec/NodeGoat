@@ -34,7 +34,7 @@ jobs:
       - name: Screen project dependencies
         id: screen_dependencies
         run: node ./index.js
-        with:
+        env:
           GITHUB_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Log result
