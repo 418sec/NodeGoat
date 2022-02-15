@@ -13,24 +13,46 @@ import {
 } from "./utils.js";
 
 (async function () {
-  // const url = "https://github.com/bfred-it/filter-altered-clicks";
-  // const start = hrtime.bigint();
-  // const ossf = await generateOSSFviaGolang(url, true)
-  //   .then(async (res) => {
-  //     console.log("generated OSSF");
-  //     const rateLimitData = await octokit.request("GET /rate_limit");
-  //     console.log(rateLimitData.data.rate);
-  //     return res;
-  //   })
-  //   .catch((err) => {
-  //     throw new Error(err);
-  //   });
+  const url = "https://github.com/bfred-it/filter-altered-clicks";
 
-  // console.log(ossf);
-  // const end = hrtime.bigint();
+  const checks = [
+    "Binary-Artifacts",
+    "Branch-Protection",
+    "CI-Tests",
+    "CII-Best-Practices",
+    "Code-Review",
+    "Contributors",
+    "Dangerous-Workflow",
+    "Dependency-Update-Tool",
+    "Fuzzing",
+    "License",
+    "Maintained",
+    "Packaging",
+    "Pinned-Dependencies",
+    "SAST",
+    "Security-Policy",
+    "Signed-Releases",
+    "Token-Permissions",
+    "Vulnerabilities",
+  ];
 
-  // const time = Number(end - start) / 1000000000;
-  // console.log(time);
+  // for (const check of checks) {
+  //   const start = hrtime.bigint();
+  //   const ossf = await generateOSSFviaGolang(url, true, check)
+  //     .then(async (res) => {
+  //       console.log("generated OSSF");
+  //       const end = hrtime.bigint();
+  //       const time = Number(end - start) / 1000000000;
+  //       console.log(`Time taken: ${time} seconds`);
+  //       const rateLimitData = await octokit.request("GET /rate_limit");
+  //       console.log(rateLimitData.data.rate);
+  //       return res;
+  //     })
+  //     .catch((err) => {
+  //       throw new Error(err);
+  //     });
+  //   console.log(ossf);
+  // }
 
   // core.setOutput("result", ossf);
   // return;
@@ -38,7 +60,10 @@ import {
   // const result = generateOSSFviaDocker(test, true);
   // console.log(result);
   // return;
-  const pkg = JSON.parse(readFileSync("../../../package.json", "utf8"));
+
+  // const pkg = JSON.parse(readFileSync("../../../package.json", "utf8"));
+  const pkg = JSON.parse(readFileSync("./package.json", "utf8"));
+
   const deps = getDependencyEntries(pkg, true, 0);
   // console.log(deps[10]);
   // const [name, version] = deps[10];
@@ -66,12 +91,12 @@ import {
 
   console.log(packageURLs);
 
-  const ossfPromises = [];
+  // const ossfPromises = [];
   const ossfScorecards = [];
 
   for (const url of packageURLs) {
     const start = hrtime.bigint();
-    const ossf = generateOSSFviaDocker(url, false)
+    const ossf = await generateOSSFviaGolang(url, false, "Binary-Artifacts")
       .then(async (res) => {
         console.log("generated OSSF");
         const end = hrtime.bigint();
@@ -79,7 +104,7 @@ import {
         console.log(`This took ${time} seconds`);
         ossfScorecards.push(res);
         const rateLimitData = await octokit.request("GET /rate_limit");
-        console.log(rateLimitData.data.rate);
+        console.log(rateLimitData.data);
       })
       .catch(async (err) => {
         ossfScorecards.push({
@@ -87,18 +112,19 @@ import {
           error: err,
         });
         const rateLimitData = await octokit.request("GET /rate_limit");
-        console.log(rateLimitData.data.rate);
+        console.log(rateLimitData.data);
       });
     ossfPromises.push(ossf);
   }
   await Promise.allSettled(ossfPromises);
   console.log(ossfScorecards);
 
-  writeFileSync(
-    "./ossf/scorecards.json",
-    JSON.stringify(ossfScorecards, null, 2)
-  );
+  // writeFileSync(
+  //   "./ossf/scorecards.json",
+  //   JSON.stringify(ossfScorecards, null, 2)
+  // );
+
   console.log("DONE");
 
-  core.setOutput("result", ossf);
+  // core.setOutput("result", ossf);
 })();

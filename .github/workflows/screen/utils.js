@@ -33,11 +33,11 @@ function getDependencyEntries(pkg, includeDev, level = 0) {
   return deps;
 }
 
-async function generateOSSFviaGolang(repoURL, showDetails) {
+async function generateOSSFviaGolang(repoURL, showDetails, check) {
   // this requires having GITHUB_AUTH_TOKEN set in the environment
   // use --show-details to see the full output
   // depends on golang installation on machine
-  const command = `./scorecard --repo=${repoURL} --format=json ${
+  const command = `scorecard --repo=${repoURL} --format=json --checks=${check}  ${
     showDetails ? "--show-details" : ""
   }`;
   console.log(`executing: ${command}`);
